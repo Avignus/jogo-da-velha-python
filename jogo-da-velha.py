@@ -18,6 +18,12 @@ class MathAroundTheGame:
     def check_if_it_has_won_pattern(self):
         pass
 
+    def check_win(self, occurrences, win_pattern):
+        intersection = set(occurrences) & set(win_pattern)
+        print(intersection)
+        if len(intersection) == 3:
+            return True
+
 
 math_around_the_game = MathAroundTheGame()
 
@@ -32,6 +38,7 @@ class Game:
                              [3, 4, 5], [4, 5, 6], [2, 4, 6]]
         self.occurrences = []
         self.signs = ["X", "O"]
+        self.condition = False
 
     def show_board(self):
         skip = 0
@@ -63,26 +70,15 @@ class Game:
             self.game[position_selected] = sign
             self.occurrences = math_around_the_game.count_occurrences_with_index(
                 list(self.game.values()))
-            # print(self.occurrences[sign])
-            # print(self.list_of_wins)
             for i in self.list_of_wins:
-                print(i)
-                print(list(self.occurrences[sign]))
-                if (i in list(self.occurrences[sign])):
-                    player.points += 1
+                self.condition = math_around_the_game.check_win(
+                    self.occurrences[sign], i)
+
+                if self.condition == True:
+                    self.fim = self.condition
                     print(f"O jogador {player.name} ganhou!")
                     self.show_board()
-                    self.fim = True
-                    break
             self.change_turn()
-            # print(i)
-            # if (list(self.occurrences[sign]) in self.list_of_wins):
-            #     player.points += 1
-            #     print(f"O jogador {player.name} ganhou!")
-            #     self.show_board()
-            #     self.fim = True
-            # else:
-            #     self.change_turn()
         else:
             print("Posição já selecionada, por favor, selecione outra:")
 
