@@ -66,21 +66,25 @@ class Game:
         sign = player.sign
         position_selected = input(
             f"É a vez de {player.name}, selecione a posicao:\n")
-        if self.game[position_selected] == "_":
-            self.game[position_selected] = sign
-            self.occurrences = math_around_the_game.count_occurrences_with_index(
-                list(self.game.values()))
-            for i in self.list_of_wins:
-                self.condition = math_around_the_game.check_win(
-                    self.occurrences[sign], i)
-
-                if self.condition == True:
-                    self.fim = self.condition
-                    print(f"O jogador {player.name} ganhou!")
-                    self.show_board()
-            self.change_turn()
+        if int(position_selected) > 9 or int(position_selected) < 1:
+            print("Posição inválida, por favor, selecione uma entre 1 e 9")
+            self.play_turn()
         else:
-            print("Posição já selecionada, por favor, selecione outra:")
+            if self.game[position_selected] == "_":
+                self.game[position_selected] = sign
+                self.occurrences = math_around_the_game.count_occurrences_with_index(
+                    list(self.game.values()))
+                for i in self.list_of_wins:
+                    self.condition = math_around_the_game.check_win(
+                        self.occurrences[sign], i)
+
+                    if self.condition == True:
+                        self.fim = self.condition
+                        print(f"O jogador {player.name} ganhou!")
+                        self.show_board()
+                self.change_turn()
+            else:
+                print("Posição já selecionada, por favor, selecione outra:")
 
     def change_turn(self):
         if self.turn == 0:
